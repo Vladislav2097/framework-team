@@ -8,7 +8,7 @@
       tabindex="0"
     >
       <button class="dropdown-btn" type="button">
-        <p>Created</p>
+        <span>Created</span>
         <img src="@/assets/icons/Vector.svg" alt="Vector" />
       </button>
 
