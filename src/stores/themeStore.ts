@@ -17,7 +17,6 @@ export default defineStore('theme', {
     toggleTheme() {
       this.theme = this.theme === AppTheme.Dark ? AppTheme.Light : AppTheme.Dark;
       localStorage.setItem('theme', JSON.stringify(this.theme));
-      // Обновляем класс у body в зависимости от темы
       document.body.dataset.theme = this.theme === 'dark' ? 'dark' : 'light';
     },
     initTheme() {

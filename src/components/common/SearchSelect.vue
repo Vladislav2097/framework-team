@@ -75,7 +75,6 @@ const clearSelection = () => {
 };
 
 const closeDropdown = (event: MouseEvent) => {
-  // Проверяем, что клик был вне компонента .select-wrapper
   if (!(event.target as Element).closest('.select-wrapper')) {
     isOpen.value = false;
   }

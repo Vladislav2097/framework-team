@@ -1,6 +1,6 @@
 import type { Author, DateFilter, Painting, SearchParams, Location } from '@/types/interfaces';
 import { defineStore } from 'pinia';
-import { fetchPaintings, fetchAuthors, fetchLocations } from '@/services/apiService';
+import { fetchPaintings, fetchAuthors, fetchLocations, fetchPagination } from '@/services/apiService';
 import handleError from '@/utils/errorHandling';
 
 export default defineStore('gallery', {
@@ -12,6 +12,7 @@ export default defineStore('gallery', {
     error: null as string | null,
     currentPage: 1,
     pageSize: 12,
+    totalPages: 0,
     filterByAuthorId: null as number | null,
     filterByLocationId: null as number | null,
     filterByName: '',
@@ -35,7 +36,9 @@ export default defineStore('gallery', {
       };
 
       try {
-        this.images = await fetchPaintings(requestParams);
+        const {paintings, totalCount} = await fetchPaintings(requestParams);
+        this.images = paintings;
+        this.totalPages = Math.ceil(totalCount / this.pageSize);
       } catch (error: unknown) {
         this.error = handleError(error);
       } finally {
@@ -46,7 +49,6 @@ export default defineStore('gallery', {
     async loadAuthors() {
       try {
         this.authors = await fetchAuthors();
-        // console.log(this.authors);
       } catch (error) {
         this.error = handleError(error);
       }
@@ -58,13 +60,6 @@ export default defineStore('gallery', {
       } catch (error) {
         this.error = handleError(error);
       }
-    },
-
-    setPage(page: number) {
-      this.currentPage = page;
-      this.loadImages().catch((error: unknown) => {
-        this.error = handleError(error);
-      });
     },
 
     setAuthorFilter(authorId: number | null) {
@@ -94,6 +89,27 @@ export default defineStore('gallery', {
       this.fromDate = from || '';
       this.beforeDate = before || '';
       this.currentPage = 1;
+      this.loadImages().catch((error: unknown) => {
+        this.error = handleError(error);
+      });
+    },
+
+    async loadPages() {
+      const requestParams: SearchParams = {
+        _page: this.currentPage,
+        _limit: this.pageSize,
+      };
+
+      try {
+        const response = await fetchPagination(requestParams);
+        this.totalPages = Math.ceil(response.totalCount / this.pageSize);
+      } catch (error: unknown) {
+        this.error = handleError(error);
+      }
+    },
+
+    setPage(page: number) {
+      this.currentPage = page;
       this.loadImages().catch((error: unknown) => {
         this.error = handleError(error);
       });

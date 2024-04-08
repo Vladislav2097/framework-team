@@ -30,35 +30,35 @@
 
 <script setup lang="ts">
 import NavigationButton from '@/components/common/PaginationButton.vue';
-import usePaginationStore from '@/stores/paginationStore';
+import useGalleryStore from '@/stores/galleryStore'
 import { storeToRefs } from 'pinia';
 import { onMounted } from 'vue';
 
-const paginationStore = usePaginationStore();
-const { currentPage, totalPages } = storeToRefs(paginationStore);
-// console.log(currentPage, totalPages);
+const galleryStore = useGalleryStore();
+const { currentPage, totalPages } = storeToRefs(galleryStore);
+
 const setPage = (page: number) => {
-  paginationStore.setPage(page);
+  galleryStore.setPage(page);
 };
 
 const setPreviousPage = () => {
-  paginationStore.setPage(currentPage.value - 1);
+  galleryStore.setPage(currentPage.value - 1);
 };
 
 const setNextPage = () => {
-  paginationStore.setPage(currentPage.value + 1);
+  galleryStore.setPage(currentPage.value + 1);
 };
 
 const setFirstPage = () => {
-  paginationStore.setPage(1);
+  galleryStore.setPage(1);
 };
 
 const setLastPage = () => {
-  paginationStore.setPage(totalPages.value);
+  galleryStore.setPage(totalPages.value);
 };
 
 onMounted(() => {
-  paginationStore.loadPages();
+  galleryStore.loadPages();
 });
 </script>
 

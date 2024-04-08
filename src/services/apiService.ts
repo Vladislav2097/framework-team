@@ -3,12 +3,16 @@ import axios from 'axios';
 
 const API_BASE_URL = 'https://test-front.framework.team';
 
-export const fetchPaintings = async (params?: SearchParams): Promise<Painting[]> => {
+export const fetchPaintings = async (params?: SearchParams): Promise<{paintings: Painting[], totalCount: number}> => {
   const response = await axios.get<Painting[]>(`${API_BASE_URL}/paintings`, {
     params: params as Record<string, string | number | undefined>,
   });
+  const totalCount = parseInt(response.headers['x-total-count']);
 
-  return response.data;
+  return {
+    paintings: response.data,
+    totalCount: totalCount,
+  };
 };
 
 export const fetchPagination = async (params?: SearchParams): Promise<{ totalCount: number }> => {
