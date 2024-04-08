@@ -24,8 +24,8 @@ import { onMounted } from 'vue';
 const galleryStore = useGalleryStore();
 const { images, loading, error, authors, locations } = storeToRefs(galleryStore);
 
-onMounted(() => {
-  galleryStore.loadImages();
+onMounted(async () => {
+  await galleryStore.loadImages();
 });
 </script>
 
