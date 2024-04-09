@@ -15,15 +15,6 @@ export const fetchPaintings = async (params?: SearchParams): Promise<{paintings:
   };
 };
 
-export const fetchPagination = async (params?: SearchParams): Promise<{ totalCount: number }> => {
-  const response = await axios.get<Painting[]>(`${apiBaseUrl}/paintings`, { params });
-  const totalCount = parseInt(response.headers['x-total-count'], 10) || 0;
-
-  return {
-    totalCount,
-  };
-};
-
 export const fetchAuthors = async (): Promise<Author[]> => {
   const response = await axios.get<Author[]>(`${apiBaseUrl}/authors`);
   return response.data;

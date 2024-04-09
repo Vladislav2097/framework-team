@@ -32,7 +32,6 @@
 import NavigationButton from '@/components/common/PaginationButton.vue';
 import useGalleryStore from '@/stores/galleryStore'
 import { storeToRefs } from 'pinia';
-import { onMounted } from 'vue';
 
 const galleryStore = useGalleryStore();
 const { currentPage, totalPages } = storeToRefs(galleryStore);
@@ -56,10 +55,6 @@ const setFirstPage = () => {
 const setLastPage = () => {
   galleryStore.setPage(totalPages.value);
 };
-
-onMounted(() => {
-  galleryStore.loadPages();
-});
 </script>
 
 <style lang="scss" scoped>

@@ -1,6 +1,6 @@
 import type { Author, DateFilter, Painting, SearchParams, Location } from '@/types/interfaces';
 import { defineStore } from 'pinia';
-import { fetchPaintings, fetchAuthors, fetchLocations, fetchPagination } from '@/services/apiService';
+import { fetchPaintings, fetchAuthors, fetchLocations } from '@/services/apiService';
 import handleError from '@/utils/errorHandling';
 
 export default defineStore('gallery', {
@@ -92,20 +92,6 @@ export default defineStore('gallery', {
       this.loadImages().catch((error: unknown) => {
         this.error = handleError(error);
       });
-    },
-
-    async loadPages() {
-      const requestParams: SearchParams = {
-        _page: this.currentPage,
-        _limit: this.pageSize,
-      };
-
-      try {
-        const response = await fetchPagination(requestParams);
-        this.totalPages = Math.ceil(response.totalCount / this.pageSize);
-      } catch (error: unknown) {
-        this.error = handleError(error);
-      }
     },
 
     setPage(page: number) {
